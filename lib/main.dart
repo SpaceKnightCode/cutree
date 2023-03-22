@@ -1,9 +1,9 @@
-import 'package:cutree/homepage.dart';
 import 'package:cutree/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cutree/homepage.dart';
 
 class DarkModeState extends ChangeNotifier {
   bool _isDarkMode = false;
