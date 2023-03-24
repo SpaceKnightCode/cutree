@@ -16,6 +16,7 @@ dependencies:
   material_design_icons_flutter:
   google_fonts:
   provider:
+  fluttertoast:
   
   
 dev_dependencies:
@@ -23,14 +24,28 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
 
+
+  
+
 flutter:
-  uses-material-design: true
   assets:
     - assets/images/facebook.png
     - assets/images/google.png
     - assets/images/welcome.png
-    - assets/images/logo.png
     - assets/images/haircut.png
     - assets/images/shave.jpeg
     - assets/images/beard_trim.png
     - assets/images/salon_images/salon_1.jpg
+    - assets/images/logo/logo-white.png
+    - assets/images/logo/logo-black.png
+    - assets/images/logo/logo-color.png
+    - assets/images/logo/logo-no-background.png
+    - assets/icons/google-logo.png
+  fonts:
+    - family: Raleway
+      fonts:
+        - asset: fonts\Titillium Web Black.ttf
+
+  uses-material-design: true
+  
+    

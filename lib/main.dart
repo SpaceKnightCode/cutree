@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cutree/homepage.dart';
+
+import 'new_user_view.dart';
 
 class DarkModeState extends ChangeNotifier {
   bool _isDarkMode = false;
@@ -35,7 +36,7 @@ class MainApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: ((context, snapshot) {
             if (snapshot.hasData) {
-              return Dashboard();
+              return IntroPage();
             } else {
               return const LoginScreen();
             }

@@ -7,10 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
-void main() {
-  runApp(const CutreeApp());
-}
-
 class CutreeApp extends StatelessWidget {
   const CutreeApp({super.key});
 
@@ -43,9 +39,6 @@ class _DashboardState extends State<Dashboard> {
       isDarkMode ? DarkmodeColors.foreground : LightmodeColors.foreground;
   final List<String> images = [
     'assets/images/salon_images/salon_1.jpg',
-    '',
-    '',
-    '',
   ];
 
   @override
