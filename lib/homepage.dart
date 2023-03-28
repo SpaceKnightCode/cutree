@@ -2,10 +2,17 @@ import 'package:cutree/colors/darkmode_colors.dart';
 import 'package:cutree/colors/lightmode_colors.dart';
 import 'package:cutree/login_screen.dart';
 import 'package:cutree/services_page.dart';
+import 'package:cutree/views/salon_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+
+import 'package:flutter/material.dart' show MaterialApp, ThemeData;
+import 'package:flutter/material.dart'
+    show
+        Colors; // Add this line as well if you want to use the default Material3 color palette.
+import 'package:flutter/material.dart' show useMaterial3;
+import 'package:google_fonts/google_fonts.dart';
 
 class CutreeApp extends StatelessWidget {
   const CutreeApp({super.key});
@@ -15,6 +22,7 @@ class CutreeApp extends StatelessWidget {
     return MaterialApp(
       title: 'Home Screen',
       theme: ThemeData(useMaterial3: true),
+      darkTheme: ThemeData.dark(useMaterial3: true),
       home: const Dashboard(),
     );
   }
@@ -73,144 +81,88 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 90, 0, 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 14.0),
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.menu_rounded),
-                iconSize: 35,
+        padding: const EdgeInsets.fromLTRB(0, 70, 0, 0),
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 5.0),
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.menu_rounded),
+                  iconSize: 35,
+                ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(left: 30, top: 20, right: 30),
-              child:
-                  const Text('Welcome to Cutree, find a barber shop near you',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        wordSpacing: 0.1,
+              SizedBox(
+                height: 40,
+              ),
+              Container(
+                padding: const EdgeInsets.only(
+                  left: 15,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 300,
+                      child: Text(
+                        'Welcome to Cutree, find a barber shop near you.',
+                        style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: -1.1,
+                            height: 1.1),
+                        textScaleFactor: 2.5,
                       ),
-                      textScaleFactor: 2),
-            ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: OutlinedButton(
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 40),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: OutlinedButton(
+                        style: const ButtonStyle(
+                          foregroundColor:
+                              MaterialStatePropertyAll(Colors.black),
+                          iconSize: MaterialStatePropertyAll(15),
+                        ),
+                        onPressed: () {},
+                        child: Row(
+                          children: [Icon(Icons.location_pin), Text("nearby")],
+                        ),
+                      ),
+                    ),
+                    OutlinedButton(
                       style: const ButtonStyle(
                         foregroundColor: MaterialStatePropertyAll(Colors.black),
                         iconSize: MaterialStatePropertyAll(15),
                       ),
                       onPressed: () {},
                       child: Row(
-                        children: [Icon(Icons.location_pin), Text("nearby")],
+                        children: const [Icon(Icons.search), Text("search")],
                       ),
                     ),
-                  ),
-                  OutlinedButton(
-                    style: const ButtonStyle(
-                      foregroundColor: MaterialStatePropertyAll(Colors.black),
-                      iconSize: MaterialStatePropertyAll(15),
-                    ),
-                    onPressed: () {},
-                    child: Row(
-                      children: const [Icon(Icons.search), Text("search")],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              height: 330,
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                scrollDirection: Axis.horizontal,
-                itemCount: images.length,
-                itemBuilder: (context, index) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(25),
-                    child: Card(
-                      color: LightmodeColors.foreground,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 300,
-                              height: 160,
-                              child: FittedBox(
-                                child: Image.asset(
-                                    'assets/images/salon_images/salon_1.jpg'),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 25,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    height: 45,
-                                    child: Image.asset(
-                                        "assets/images/haircut.png"),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Column(
-                                      children: const [
-                                        Text("Black barber shop\nCooper Square",
-                                            style:
-                                                TextStyle(color: Colors.black)),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 25,
-                            ),
-                            Center(
-                              widthFactor: 1.25,
-                              child: NeumorphicButton(
-                                style: NeumorphicStyle(color: Colors.black),
-                                child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 70, vertical: 5),
-                                    child: const Text(
-                                      "Book Now",
-                                      style: TextStyle(color: Colors.white),
-                                    )),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      (MaterialPageRoute(builder: (context) {
-                                        return const Booking();
-                                      })));
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                          ]),
-                    ),
-                  );
-                },
+              Container(
+                height: 330,
+                child: ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: images.length,
+                  itemBuilder: (context, index) {
+                    return SalonCard();
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

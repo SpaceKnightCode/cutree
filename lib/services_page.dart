@@ -1,3 +1,4 @@
+import 'package:cutree/homepage.dart';
 import 'package:cutree/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -24,7 +25,10 @@ class Booking extends StatelessWidget {
                   style: TextStyle(color: Colors.black))),
           actions: [
             IconButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.popUntil(
+                      context,
+                      ModalRoute.withName('/'),
+                    ),
                 icon: Icon(Icons.close_rounded)),
           ],
         ),

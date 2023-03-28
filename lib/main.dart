@@ -1,4 +1,9 @@
+import 'dart:js';
+
+import 'package:cutree/homepage.dart';
 import 'package:cutree/login_screen.dart';
+import 'package:cutree/professionals_page.dart';
+import 'package:cutree/services_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +25,14 @@ Future main() async {
   await Firebase.initializeApp();
   runApp(ChangeNotifierProvider(
     create: (context) => DarkModeState(),
-    child: const MaterialApp(
+    child: MaterialApp(
+      theme: ThemeData(useMaterial3: true),
       home: MainApp(),
+      routes: {
+        'dash': (context) => Dashboard(),
+        'services': (context) => Booking(),
+        'professionals': (context) => Professionals(shopID: null,),
+      },
     ),
   ));
 }
@@ -36,9 +47,9 @@ class MainApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: ((context, snapshot) {
             if (snapshot.hasData) {
-              return IntroPage();
+              return Dashboard();
             } else {
-              return const LoginScreen();
+              return IntroPage();
             }
           })),
     );
