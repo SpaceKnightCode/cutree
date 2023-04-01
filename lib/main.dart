@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:cutree/homepage.dart';
 import 'package:cutree/login_screen.dart';
 import 'package:cutree/professionals_page.dart';
@@ -31,7 +29,6 @@ Future main() async {
       routes: {
         'dash': (context) => Dashboard(),
         'services': (context) => Booking(),
-        'professionals': (context) => Professionals(shopID: null,),
       },
     ),
   ));

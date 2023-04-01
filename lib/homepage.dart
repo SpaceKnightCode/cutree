@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cutree/colors/darkmode_colors.dart';
 import 'package:cutree/colors/lightmode_colors.dart';
 import 'package:cutree/login_screen.dart';
@@ -8,9 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import 'package:flutter/material.dart' show MaterialApp, ThemeData;
-import 'package:flutter/material.dart'
-    show
-        Colors; // Add this line as well if you want to use the default Material3 color palette.
+import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/material.dart' show useMaterial3;
 import 'package:google_fonts/google_fonts.dart';
 
@@ -45,9 +44,6 @@ class _DashboardState extends State<Dashboard> {
 
   Color cardColor =
       isDarkMode ? DarkmodeColors.foreground : LightmodeColors.foreground;
-  final List<String> images = [
-    'assets/images/salon_images/salon_1.jpg',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -152,14 +148,22 @@ class _DashboardState extends State<Dashboard> {
               ),
               Container(
                 height: 330,
-                child: ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: images.length,
-                  itemBuilder: (context, index) {
-                    return SalonCard();
-                  },
-                ),
+                child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('store-list')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot Store = snapshot.data!.docs[index];
+
+                            return SalonCard(
+                              store: Store,
+                            );
+                          });
+                    }),
               ),
             ],
           ),

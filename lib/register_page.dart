@@ -328,15 +328,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   (?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$ # TLD
 ''', multiLine: true, caseSensitive: false);
 
-    if (!emailRegExp.hasMatch(email)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a valid email address'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
     if (password.length < 8) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

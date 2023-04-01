@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CreateAppointment {
   CreateAppointment() {
-    FirebaseFirestore.instance.collection('users').add({
-      'name': 'John Doe',
-      'email': 'johndoe@example.com',
+    final user = FirebaseAuth.instance.currentUser!;
+    String? emailId = user.email;
+    String appointmentId;
+
+    FirebaseFirestore.instance.collection('appointment-list').add({
+      'name': 'Kaushik',
+      'email': '$emailId',
       'age': 30,
     }).then((value) {
       print('Data added successfully!');
