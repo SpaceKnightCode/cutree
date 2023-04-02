@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cutree/barber_list_tile.dart';
 import 'package:cutree/create_appointments.dart';
 import 'package:cutree/services_page.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,6 @@ class _ProfessionalsState extends State<Professionals> {
   Widget build(BuildContext context) {
     final BarberList = Store['barber-list'];
 
-    print(Store.id);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) {
@@ -58,16 +58,24 @@ class _ProfessionalsState extends State<Professionals> {
           ),
           body: SafeArea(
             child: Container(
-              child: ListView.builder(
-                  itemCount: 2,
-                  itemBuilder: (context, index) {
-                    String name = BarberList[index]['name'];
-                    Widget Profile =
-                        Image.network(BarberList[index]['profile-pic']);
-                    return ListTile(
-                      leading: Profile,
-                    );
-                  }),
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: GridView.builder(
+                itemCount: 2,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 15,
+                    mainAxisExtent: 230),
+                itemBuilder: (context, index) {
+                  String Name = BarberList[index]['name'];
+                  Image Profile = Image.network(
+                    BarberList[index]['profile-pic'],
+                  );
+                  return BarberListTile(
+                    profilePic: Profile,
+                    name: Name,
+                  );
+                },
+              ),
             ),
           ),
         ),
