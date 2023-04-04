@@ -28,7 +28,6 @@ Future main() async {
       home: MainApp(),
       routes: {
         'dash': (context) => Dashboard(),
-        'services': (context) => Booking(),
       },
     ),
   ));

@@ -3,45 +3,40 @@ import 'package:flutter/material.dart';
 
 class BarberListTile extends StatefulWidget {
   final Image profilePic;
+  final bool isSelected;
   final String name;
+  final VoidCallback onSelect;
   const BarberListTile(
-      {super.key, required this.profilePic, required this.name});
+      {super.key,
+      required this.profilePic,
+      required this.name,
+      required this.isSelected,
+      required this.onSelect});
 
   @override
-  State<BarberListTile> createState() => _BarberListTileState(profilePic, name);
+  State<BarberListTile> createState() => _BarberListTileState();
 }
 
 class _BarberListTileState extends State<BarberListTile> {
-  late Image ProfilePic;
-  late String Name;
-  bool isSelected = false;
-  _BarberListTileState(Image profilePic, String name) {
-    ProfilePic = profilePic;
-    Name = name;
-  }
-  Color tileColor = Colors.white;
-  Color textColor = Colors.black;
+  late Color tileColor;
+  late Color textColor;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: tileColor,
-        borderRadius: BorderRadius.circular(20.0),
-        border: Border.all(
-          color: Colors.grey.shade400,
-          width: 1.0,
+    tileColor = widget.isSelected ? Colors.black : Colors.white;
+    textColor = widget.isSelected ? Colors.white : Colors.black;
+    return InkWell(
+      onTap: widget.onSelect,
+      child: Container(
+        decoration: BoxDecoration(
+          color: tileColor,
+          borderRadius: BorderRadius.circular(20.0),
+          border: Border.all(
+            color: Colors.grey.shade400,
+            width: 1.0,
+          ),
         ),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20.0),
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              isSelected = !isSelected;
-              tileColor = isSelected ? Colors.black : Colors.white;
-              textColor = isSelected ? Colors.white : Colors.black;
-            });
-          },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
           child: GridTile(
             child: Container(
               padding: EdgeInsets.all(7.0),
@@ -57,7 +52,7 @@ class _BarberListTileState extends State<BarberListTile> {
                       child: Container(
                         padding: EdgeInsets.only(top: 30),
                         child: Image(
-                          image: ProfilePic.image,
+                          image: widget.profilePic.image,
                           fit: BoxFit.contain,
                           height: 70.0,
                           width: 70.0,
@@ -66,7 +61,7 @@ class _BarberListTileState extends State<BarberListTile> {
                     ),
                   ),
                   Text(
-                    Name,
+                    widget.name,
                     style: TextStyle(
                       color: textColor,
                       fontWeight: FontWeight.bold,
@@ -75,7 +70,7 @@ class _BarberListTileState extends State<BarberListTile> {
                   ),
                   SizedBox(height: 4.0),
                   Text(
-                    Name,
+                    widget.name,
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 14.0,
@@ -86,7 +81,7 @@ class _BarberListTileState extends State<BarberListTile> {
                     style: ButtonStyle(
                         foregroundColor: MaterialStatePropertyAll(textColor)),
                     onPressed: () {},
-                    child: Text('About $Name'),
+                    child: Text('About ' + widget.name),
                   ),
                 ],
               ),
