@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cutree/details.dart';
 import 'package:cutree/professionals_page.dart';
-import 'package:cutree/services_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,23 +12,21 @@ class SalonCard extends StatefulWidget {
   });
 
   @override
-  State<SalonCard> createState() => _SalonCardState(store);
+  State<SalonCard> createState() => _SalonCardState();
 }
 
 class _SalonCardState extends State<SalonCard> {
-  late DocumentSnapshot store;
-  _SalonCardState(store) {
-    this.store = store;
-  }
+  late Details _details = Details();
+
   @override
   Widget build(BuildContext context) {
-    String shopName = store['name'];
+    String shopName = widget.store['name'];
     Widget logo = Image.network(
-      store['logo'],
+      widget.store['logo'],
       fit: BoxFit.fill,
     );
     Widget cover = Image.network(
-      store['cover'],
+      widget.store['cover'],
       fit: BoxFit.fill,
     );
     return ClipRRect(
@@ -112,7 +110,8 @@ class _SalonCardState extends State<SalonCard> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) {
-                              return Professionals(store: store);
+                              _details.store = widget.store;
+                              return Professionals(details: _details);
                             }),
                           );
                         },

@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cutree/login_screen.dart';
-import 'package:cutree/new_user_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -14,6 +14,10 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final firstnameController = TextEditingController();
+  final lastnameController = TextEditingController();
+  final phoneNumberController = TextEditingController();
+
   @override
   void dispose() {
     emailController.dispose();
@@ -25,135 +29,166 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Material(
-          child: Container(
-            color: Colors.black,
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 30,
-                  padding: const EdgeInsets.only(right: 2),
-                  height: 45,
-                  child: ClipOval(
-                    clipBehavior: Clip.antiAlias,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: FilledButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          shape: const CircleBorder(),
-                          foregroundColor: Colors.grey.shade800,
-                          backgroundColor: Colors.grey.shade800),
-                      child: const Icon(
-                        size: 20,
-                        weight: 30,
-                        color: Colors.white,
-                        Icons.arrow_back_rounded,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Text(
-                    "Create your free account",
-                    style: GoogleFonts.ubuntu(
+      body: Material(
+        child: Container(
+          margin: EdgeInsets.only(top: 0),
+          color: Colors.black,
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 45),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 30,
+                padding: const EdgeInsets.only(right: 2),
+                height: 45,
+                child: ClipOval(
+                  clipBehavior: Clip.antiAlias,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: FilledButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        shape: const CircleBorder(),
+                        foregroundColor: Colors.grey.shade800,
+                        backgroundColor: Colors.grey.shade800),
+                    child: const Icon(
+                      size: 20,
+                      weight: 30,
                       color: Colors.white,
-                      fontSize: 40,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: -2,
+                      Icons.arrow_back_rounded,
                     ),
                   ),
                 ),
-                const SizedBox(height: 25),
-                Expanded(
-                  child: Container(
-                    width: double.infinity,
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Column(
+              ),
+              Container(
+                child: Text(
+                  "Create your free account",
+                  style: GoogleFonts.ubuntu(
+                    color: Colors.white,
+                    fontSize: 40,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: -2,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           //inside the scrollview
                           Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.shade900),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(10))),
-                            height: 45,
                             child: Row(
-                              children: [
-                                Expanded(
-                                  child: FloatingActionButton(
-                                    heroTag: null,
-                                    foregroundColor: Colors.white,
-                                    backgroundColor: Colors.black,
-                                    onPressed: () {},
-                                    child: Row(
-                                      children: const [
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Icon(Icons.apple),
-                                        Expanded(
-                                          child: Center(
-                                            child: Text("Continue with Apple"),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 20,
-                                        )
-                                      ],
-                                    ),
+                              children: const [
+                                Text(
+                                  'Name',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
                                   ),
                                 ),
+                                Text(
+                                  " *",
+                                  style: TextStyle(color: Colors.blue),
+                                )
                               ],
                             ),
                           ),
                           const SizedBox(
-                            height: 15,
+                            height: 10,
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.shade900),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(10))),
-                            height: 45,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: FloatingActionButton(
-                                    heroTag: null,
-                                    foregroundColor: Colors.white,
-                                    backgroundColor: Colors.black,
-                                    onPressed: () {},
-                                    child: Row(
-                                      children: [
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Container(
-                                            height: 26,
-                                            width: 26,
-                                            child: Image.asset(
-                                                'assets/icons/google-logo.png')),
-                                        const Expanded(
-                                          child: Center(
-                                            child: Text("Continue with Google"),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 20,
-                                        )
-                                      ],
+                          Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.grey.shade900,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.black,
+                                ),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      30,
+                                  child: TextField(
+                                    controller: firstnameController,
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.only(left: 15),
+                                      border: InputBorder.none,
+                                      hintText: 'First Name',
+                                      hintStyle: TextStyle(color: Colors.grey),
                                     ),
                                   ),
                                 ),
-                              ],
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.grey.shade900,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.black,
+                                ),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      30,
+                                  child: TextField(
+                                    controller: lastnameController,
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.only(left: 15),
+                                      border: InputBorder.none,
+                                      hintText: 'Last Name',
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: const [
+                              Text(
+                                'Phone number',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              Text(
+                                "",
+                                style: TextStyle(color: Colors.blue),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey.shade900),
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.black,
                             ),
+                            child: TextField(
+                              controller: phoneNumberController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Phone Number',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                contentPadding: EdgeInsets.only(left: 20),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
                           ),
                           const SizedBox(height: 20),
                           Row(
@@ -163,21 +198,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     thickness: 0.7,
                                     color: Colors.grey.shade900),
                               ),
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                child: const Text(
-                                  "OR",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.grey),
-                                ),
-                              ),
-                              Expanded(
-                                child: Divider(
-                                  thickness: 0.7,
-                                  color: Colors.grey.shade900,
-                                ),
-                              )
                             ],
                           ),
                           const SizedBox(
@@ -218,7 +238,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 20),
                           Row(
                             children: const [
                               Text(
@@ -258,7 +278,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Container(
                             child: Row(
                               children: [
-                                Text(
+                                const Text(
                                   "Already have an account ?",
                                   style: TextStyle(color: Colors.grey),
                                 ),
@@ -267,10 +287,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => LoginScreen()),
+                                          builder: (context) =>
+                                              const LoginScreen()),
                                     );
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     "Login",
                                     style: TextStyle(color: Colors.lightGreen),
                                   ),
@@ -278,7 +299,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 20),
                           Row(
                             children: [
                               Expanded(
@@ -296,13 +317,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
+                        ]),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -341,9 +360,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
-
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      final data = {
+        'name': {
+          'first-name': firstnameController.text.trim(),
+          'last-name': lastnameController.text.trim(),
+        },
+        'email': emailController.text.trim(),
+        'phone-number': int.parse(phoneNumberController.text.trim())
+      };
+      db.collection('Users').add(data);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         showDialog(
@@ -356,10 +384,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () {
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) {
-                          return LoginScreen();
+                          return const LoginScreen();
                         }));
                       },
-                      child: Text("Login Instead"),
+                      child: const Text("Login Instead"),
                     ),
                     TextButton(
                       onPressed: () {

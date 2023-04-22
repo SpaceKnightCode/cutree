@@ -149,21 +149,30 @@ class _DashboardState extends State<Dashboard> {
               Container(
                 height: 330,
                 child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('store-list')
-                        .snapshots(),
-                    builder: (context, snapshot) {
+                  stream: FirebaseFirestore.instance
+                      .collection('store-list')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text("Loading...");
+                    }
+                    if (snapshot.hasData) {
+                      int _itemCount = snapshot.data!.docs.length;
                       return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            DocumentSnapshot Store = snapshot.data!.docs[index];
-
-                            return SalonCard(
-                              store: Store,
-                            );
-                          });
-                    }),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _itemCount,
+                        itemBuilder: (context, index) {
+                          DocumentSnapshot Store = snapshot.data!.docs[index];
+                          return SalonCard(
+                            store: Store,
+                          );
+                        },
+                      );
+                    } else {
+                      return Text("No data found.");
+                    }
+                  },
+                ),
               ),
             ],
           ),

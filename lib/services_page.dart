@@ -1,16 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cutree/date_and_time_page.dart';
 import 'package:cutree/service_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'main.dart';
+import 'details.dart';
 
 class Booking extends StatefulWidget {
-  final DocumentSnapshot store;
+  final Details details;
 
   const Booking({
     super.key,
-    required this.store,
+    required this.details,
   });
 
   @override
@@ -18,17 +18,15 @@ class Booking extends StatefulWidget {
 }
 
 class _BookingState extends State<Booking> {
-  int selectedBarber = -1;
+  int selectedService = -1;
   bool ifAnySelected = false;
+  String _name = "";
+  double _price = 0.0;
   @override
   Widget build(BuildContext context) {
-    final BarberList = widget.store['barber-list'];
-
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) {
-          DarkModeState();
-        }),
+        ChangeNotifierProvider(create: (context) {}),
       ],
       child: Stack(
         children: [
@@ -39,7 +37,7 @@ class _BookingState extends State<Booking> {
               title: Container(
                 padding: EdgeInsets.all(20),
                 child: Text(
-                  "Choose a Barber",
+                  "Choose the service",
                   style: GoogleFonts.roboto(
                     textStyle: TextStyle(color: Colors.black),
                   ),
@@ -55,15 +53,20 @@ class _BookingState extends State<Booking> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: ListView.builder(
-                  itemCount: 2,
+                  itemCount: widget.details.store['services-list'].length,
                   itemBuilder: (context, index) {
+                    _name =
+                        widget.details.store['services-list'][index]['name'];
+                    _price = widget
+                        .details.store['services-list'][index]['price']
+                        .toDouble();
                     return Container(
                       child: ServiceTile(
-                          name: widget.store['services-list'][index]
-                              ['service-name'],
-                          onSelect: () => selectBarber(index),
-                          isSelected: selectedBarber == index,
-                          price: widget.store['services-list'][index]['price']),
+                        name: _name,
+                        onSelect: () => selectService(index),
+                        isSelected: selectedService == index,
+                        price: _price,
+                      ),
                     );
                   },
                 ),
@@ -86,7 +89,9 @@ class _BookingState extends State<Booking> {
                   if (ifAnySelected) {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return Container();
+                        widget.details.service = _name;
+                        Details _details = widget.details;
+                        return SchedulePicker(details: _details);
                       },
                     ));
                   }
@@ -99,11 +104,10 @@ class _BookingState extends State<Booking> {
     );
   }
 
-  void selectBarber(int index) {
+  void selectService(int index) {
     setState(() {
-      selectedBarber = index;
+      selectedService = index;
       ifAnySelected = true;
-      print(index);
     });
   }
 }

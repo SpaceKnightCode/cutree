@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cutree/barber_list_tile.dart';
-import 'package:cutree/create_appointments.dart';
+import 'package:cutree/details.dart';
 import 'package:cutree/services_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,27 +8,26 @@ import 'package:provider/provider.dart';
 import 'main.dart';
 
 class Professionals extends StatefulWidget {
-  final DocumentSnapshot store;
+  final Details details;
 
   const Professionals({
     super.key,
-    required this.store,
+    required this.details,
   });
 
   @override
-  State<Professionals> createState() => _ProfessionalsState(store);
+  State<Professionals> createState() => _ProfessionalsState();
 }
 
 class _ProfessionalsState extends State<Professionals> {
-  late DocumentSnapshot Store;
-  _ProfessionalsState(DocumentSnapshot<Object?> store) {
-    this.Store = store;
-  }
+  Details _details = Details();
   int selectedBarber = -1;
   bool ifAnySelected = false;
   @override
   Widget build(BuildContext context) {
-    final BarberList = Store['barber-list'];
+    _details = widget.details;
+
+    final BarberList = widget.details.store['barber-list'];
 
     return MultiProvider(
       providers: [
@@ -101,7 +99,10 @@ class _ProfessionalsState extends State<Professionals> {
                   if (ifAnySelected) {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return Booking(store: Store);
+                        _details.barber = BarberList[selectedBarber]['name'];
+                        return Booking(
+                          details: _details,
+                        );
                       },
                     ));
                   }

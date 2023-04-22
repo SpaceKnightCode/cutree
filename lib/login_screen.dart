@@ -1,5 +1,4 @@
 import 'package:cutree/homepage.dart';
-import 'package:cutree/new_user_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:fluttertoast/fluttertoast.dart';
