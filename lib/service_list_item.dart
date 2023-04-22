@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ServiceTile extends StatefulWidget {
@@ -47,7 +46,7 @@ class _ServiceTileState extends State<ServiceTile> {
           });
         },
         child: Text(
-          "Rs. " + widget.price.toString(),
+          "Rs. ${widget.price}",
         ),
       ),
     );

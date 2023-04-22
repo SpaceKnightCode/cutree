@@ -19,6 +19,8 @@ dependencies:
   fluttertoast:
   modal_bottom_sheet:
   we_slide:
+  table_calendar:
+  firebase_storage:
   
 dev_dependencies:
   flutter_test:

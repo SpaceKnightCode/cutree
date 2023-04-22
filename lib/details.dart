@@ -6,6 +6,24 @@ class Details {
   late DateTime _schedule;
   late String _barber;
   late double _price;
+  late int _Time;
+
+  void setSchedule(int year, int month, int day, String time) {
+    int splitterIndex = time.indexOf(":");
+    int hour = int.parse(time.substring(0, splitterIndex));
+    int min = int.parse(time.substring(splitterIndex + 1, splitterIndex + 3));
+    if (time.contains("pm")) {
+      hour += 12;
+    }
+    _schedule = DateTime(year, month, day, hour, min);
+  }
+
+  DateTime getSchedule() => _schedule;
+  int get Time => _Time;
+
+  set Time(int value) {
+    _Time = value;
+  }
 
   double get price => _price;
 

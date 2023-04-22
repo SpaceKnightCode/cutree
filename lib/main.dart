@@ -1,7 +1,4 @@
 import 'package:cutree/homepage.dart';
-import 'package:cutree/login_screen.dart';
-import 'package:cutree/professionals_page.dart';
-import 'package:cutree/services_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

@@ -1,8 +1,6 @@
 import 'package:cutree/login_screen.dart';
 import 'package:cutree/register_page.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class IntroPage extends StatelessWidget {
