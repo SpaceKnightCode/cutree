@@ -47,13 +47,13 @@ class _BarberListTileState extends State<BarberListTile> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Container(
-                        padding: EdgeInsets.only(top: 30),
+                    child: Container(
+                      margin: EdgeInsets.only(top: 30),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
                         child: Image(
                           image: widget.profilePic.image,
-                          fit: BoxFit.contain,
+                          fit: BoxFit.cover,
                           height: 70.0,
                           width: 70.0,
                         ),

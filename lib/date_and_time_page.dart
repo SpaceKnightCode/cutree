@@ -15,6 +15,7 @@ class SchedulePicker extends StatefulWidget {
 }
 
 class _SchedulePickerState extends State<SchedulePicker> {
+  bool focus = true;
   List weekdays = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
   List months = [
     "Jan",
@@ -35,7 +36,7 @@ class _SchedulePickerState extends State<SchedulePicker> {
   late DateTime _selectedDay;
   late DateTime _focusedDay;
   late int _selectedTime = -1;
-  late var AvailableTimes = [];
+  List AvailableTimes = [];
   late bool _ifAnySelected;
   @override
   void initState() {
@@ -84,6 +85,7 @@ class _SchedulePickerState extends State<SchedulePicker> {
                       setState(
                         () {
                           _selectedDay = selectedDay;
+                          _focusedDay = selectedDay;
                         },
                       );
                     },
@@ -91,7 +93,7 @@ class _SchedulePickerState extends State<SchedulePicker> {
                     firstDay: DateTime.now(),
                     lastDay: DateTime(2023, 05, 22),
                     currentDay: DateTime.now(),
-                    calendarFormat: CalendarFormat.twoWeeks,
+                    calendarFormat: CalendarFormat.week,
                     headerStyle: const HeaderStyle(formatButtonVisible: false),
                     calendarStyle: CalendarStyle(
                       weekendTextStyle:
@@ -110,7 +112,7 @@ class _SchedulePickerState extends State<SchedulePicker> {
                       const Text("All Available Times"),
                       Expanded(child: Container()),
                       Text(
-                        "${weekdays[_selectedDay.weekday]}, ${months[_selectedDay.month]}. ${_selectedDay.day}",
+                        "${weekdays[_selectedDay.weekday - 1]}, ${months[_selectedDay.month - 1]}. ${_selectedDay.day}",
                       ),
                     ],
                   ),
@@ -162,37 +164,42 @@ class _SchedulePickerState extends State<SchedulePicker> {
                 ),
               ],
             ),
-            Positioned(
-              bottom: MediaQuery.of(context).size.height / 13,
-              left: MediaQuery.of(context).size.width / 2 - 38,
-              child: Container(
-                height: 70,
-                width: 70,
-                child: FloatingActionButton(
-                  elevation: 6,
-                  splashColor: Colors.white54,
-                  backgroundColor: _ifAnySelected ? Colors.black : Colors.grey,
-                  foregroundColor: Colors.white,
-                  child: Icon(Icons.check, size: 30),
-                  onPressed: () {
-                    if (_ifAnySelected) {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) {
-                          widget.details.setSchedule(
-                              _selectedDay.year,
-                              _selectedDay.month,
-                              _selectedDay.day,
-                              AvailableTimes[_selectedTime]);
-                          return ConfirmationScreen(
-                            details: widget.details,
-                          );
+            focus
+                ? Positioned(
+                    bottom: MediaQuery.of(context).size.height / 13,
+                    left: MediaQuery.of(context).size.width / 2 - 38,
+                    child: Container(
+                      height: 70,
+                      width: 70,
+                      child: FloatingActionButton(
+                        elevation: 6,
+                        splashColor: Colors.white54,
+                        backgroundColor:
+                            _ifAnySelected ? Colors.black : Colors.grey,
+                        foregroundColor: Colors.white,
+                        child: Icon(Icons.check, size: 30),
+                        onPressed: () {
+                          if (_ifAnySelected) {
+                            widget.details.setSchedule(
+                                _selectedDay.year,
+                                _selectedDay.month,
+                                _selectedDay.day,
+                                AvailableTimes[_selectedTime]);
+                            showModalBottomSheet(
+                                elevation: 3,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.white,
+                                context: context,
+                                builder: (context) {
+                                  return ConfirmationScreen(
+                                      details: widget.details);
+                                });
+                          }
                         },
-                      ));
-                    }
-                  },
-                ),
-              ),
-            ),
+                      ),
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),

@@ -1,50 +1,50 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cutree/colors/darkmode_colors.dart';
-import 'package:cutree/colors/lightmode_colors.dart';
-import 'package:cutree/login_screen.dart';
-import 'package:cutree/services_page.dart';
+import 'package:cutree/profile.dart';
 import 'package:cutree/views/salon_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-
-import 'package:flutter/material.dart' show MaterialApp, ThemeData;
-import 'package:flutter/material.dart' show Colors;
-import 'package:flutter/material.dart' show useMaterial3;
 import 'package:google_fonts/google_fonts.dart';
+import 'details.dart';
 
-class CutreeApp extends StatelessWidget {
-  const CutreeApp({super.key});
+class CutreeApp extends StatefulWidget {
+  CutreeApp({super.key});
+
+  @override
+  State<CutreeApp> createState() => _CutreeAppState();
+}
+
+class _CutreeAppState extends State<CutreeApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Home Screen',
       theme: ThemeData(useMaterial3: true),
-      darkTheme: ThemeData.dark(useMaterial3: true),
-      home: const Dashboard(),
+      home: Dashboard(),
     );
   }
 }
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  const Dashboard({
+    super.key,
+  });
 
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
-  static var brightness =
-      SchedulerBinding.instance.platformDispatcher.platformBrightness;
-  static bool isDarkMode = brightness == Brightness.dark;
   static final user = FirebaseAuth.instance.currentUser;
-  static final username = user!.displayName.toString();
   static final email = user!.email.toString();
-
-  Color cardColor =
-      isDarkMode ? DarkmodeColors.foreground : LightmodeColors.foreground;
-
+  Details details = Details();
+  String url = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,26 +52,32 @@ class _DashboardState extends State<Dashboard> {
         child: ListView(
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text(username),
+              accountName: Text("Welcome"),
               accountEmail: Text(email),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(user!.photoURL.toString()),
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
+              leading: const Icon(Icons.person_2_outlined),
+              title: const Text('Profile'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Profile();
+                }));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.today),
+              title: const Text('Appointments'),
               onTap: () {},
             ),
             ListTile(
-              leading: const Icon(Icons.favorite),
-              title: Text('Favorites'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-              onTap: () {},
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+              },
             ),
           ],
         ),
@@ -79,7 +85,7 @@ class _DashboardState extends State<Dashboard> {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(0, 70, 0, 0),
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -87,11 +93,11 @@ class _DashboardState extends State<Dashboard> {
                 padding: const EdgeInsets.only(left: 5.0),
                 child: IconButton(
                   onPressed: () {},
-                  icon: Icon(Icons.menu_rounded),
+                  icon: const Icon(Icons.menu_rounded),
                   iconSize: 35,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Container(
@@ -120,7 +126,7 @@ class _DashboardState extends State<Dashboard> {
                 child: Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: OutlinedButton(
                         style: const ButtonStyle(
                           foregroundColor:
@@ -129,7 +135,10 @@ class _DashboardState extends State<Dashboard> {
                         ),
                         onPressed: () {},
                         child: Row(
-                          children: [Icon(Icons.location_pin), Text("nearby")],
+                          children: [
+                            const Icon(Icons.location_pin),
+                            const Text("nearby")
+                          ],
                         ),
                       ),
                     ),
@@ -154,7 +163,7 @@ class _DashboardState extends State<Dashboard> {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Text("Loading...");
+                      return const Text("Loading...");
                     }
                     if (snapshot.hasData) {
                       int _itemCount = snapshot.data!.docs.length;
@@ -162,14 +171,16 @@ class _DashboardState extends State<Dashboard> {
                         scrollDirection: Axis.horizontal,
                         itemCount: _itemCount,
                         itemBuilder: (context, index) {
-                          DocumentSnapshot Store = snapshot.data!.docs[index];
+                          details.store = snapshot.data!.docs[index];
+
                           return SalonCard(
-                            store: Store,
+                            details: details,
+                            store: details.store,
                           );
                         },
                       );
                     } else {
-                      return Text("No data found.");
+                      return const Text("No data found.");
                     }
                   },
                 ),

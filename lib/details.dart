@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Details {
+  late String _AppointmentID;
+  late String _userId;
+
   late DocumentSnapshot _store;
-  late String _service;
+  late List _service;
   late DateTime _schedule;
-  late String _barber;
+  late int _barber;
   late double _price;
   late int _Time;
+  late double _tip;
 
   void setSchedule(int year, int month, int day, String time) {
     int splitterIndex = time.indexOf(":");
@@ -18,11 +22,42 @@ class Details {
     _schedule = DateTime(year, month, day, hour, min);
   }
 
+  String toStringSchedule() {
+    String Time = "";
+    List weekdays = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
+    List months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sept",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+    if (_schedule.hour > 12) {
+      Time = "${_schedule.hour - 12}:${_schedule.minute}pm";
+    } else {
+      Time = "${_schedule.hour}:${_schedule.minute}am";
+    }
+    return "${months[_schedule.month]} ${_schedule.day} at $Time";
+  }
+
   DateTime getSchedule() => _schedule;
   int get Time => _Time;
 
   set Time(int value) {
     _Time = value;
+  }
+
+  String get AppointmentID => _AppointmentID;
+
+  set AppointmentID(String value) {
+    _AppointmentID = value;
   }
 
   double get price => _price;
@@ -31,21 +66,27 @@ class Details {
     _price = value;
   }
 
+  double get tip => _tip;
+
+  set tip(double value) {
+    _tip = value;
+  }
+
   DocumentSnapshot get store => _store;
 
   set store(DocumentSnapshot value) {
     _store = value;
   }
 
-  String get barber => _barber;
+  int get barber => _barber;
 
-  set barber(String value) {
+  set barber(int value) {
     _barber = value;
   }
 
-  String get service => _service;
+  List get service => _service;
 
-  set service(String value) {
+  set service(List value) {
     _service = value;
   }
 
@@ -53,5 +94,11 @@ class Details {
 
   set schedule(DateTime value) {
     _schedule = value;
+  }
+
+  String get userId => _userId;
+
+  set userId(String value) {
+    _userId = value;
   }
 }

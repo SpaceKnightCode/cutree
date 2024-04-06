@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SalonCard extends StatefulWidget {
+  final Details details;
   final DocumentSnapshot store;
   const SalonCard({
     super.key,
+    required this.details,
     required this.store,
   });
 
@@ -16,17 +18,15 @@ class SalonCard extends StatefulWidget {
 }
 
 class _SalonCardState extends State<SalonCard> {
-  late Details _details = Details();
-
   @override
   Widget build(BuildContext context) {
-    String shopName = widget.store['name'];
+    String shopName = widget.details.store['name'];
     Widget logo = Image.network(
-      widget.store['logo'],
+      widget.details.store['logo'],
       fit: BoxFit.fill,
     );
     Widget cover = Image.network(
-      widget.store['cover'],
+      widget.details.store['cover'],
       fit: BoxFit.fill,
     );
     return ClipRRect(
@@ -58,20 +58,20 @@ class _SalonCardState extends State<SalonCard> {
               ),
               Container(
                 height: 60,
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
                     Container(
-                      padding: EdgeInsets.only(right: 10, top: 10),
+                      padding: const EdgeInsets.only(right: 10, top: 10),
                       height: 60,
                       width: 60,
                       child: logo,
                     ),
                     Container(
-                      padding: EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.only(top: 10),
                       child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -96,12 +96,12 @@ class _SalonCardState extends State<SalonCard> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
                 height: 70,
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
                   children: [
                     Expanded(
@@ -110,16 +110,20 @@ class _SalonCardState extends State<SalonCard> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) {
-                              _details.store = widget.store;
-                              return Professionals(details: _details);
+                              widget.details.store = widget.store;
+                              print(widget.details.store['name']);
+
+                              return Professionals(
+                                details: widget.details,
+                              );
                             }),
                           );
                         },
                         style: ButtonStyle(
                           overlayColor:
-                              MaterialStatePropertyAll(Colors.white10),
+                              const MaterialStatePropertyAll(Colors.white10),
                           foregroundColor:
-                              MaterialStatePropertyAll(Colors.black),
+                              const MaterialStatePropertyAll(Colors.black),
                           backgroundColor: const MaterialStatePropertyAll(
                             Color.fromRGBO(0, 132, 255, 1),
                           ),

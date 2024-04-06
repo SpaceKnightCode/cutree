@@ -22,6 +22,7 @@ class _BookingState extends State<Booking> {
   bool ifAnySelected = false;
   String _name = "";
   double _price = 0.0;
+  int _duration = 0;
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -35,23 +36,23 @@ class _BookingState extends State<Booking> {
               backgroundColor: Colors.white,
               elevation: 1,
               title: Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Text(
                   "Choose the service",
                   style: GoogleFonts.roboto(
-                    textStyle: TextStyle(color: Colors.black),
+                    textStyle: const TextStyle(color: Colors.black),
                   ),
                 ),
               ),
               actions: [
                 IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.close_rounded)),
+                    icon: const Icon(Icons.close_rounded)),
               ],
             ),
             body: SafeArea(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: ListView.builder(
                   itemCount: widget.details.store['services-list'].length,
                   itemBuilder: (context, index) {
@@ -60,6 +61,9 @@ class _BookingState extends State<Booking> {
                     _price = widget
                         .details.store['services-list'][index]['price']
                         .toDouble();
+                    _duration =
+                        widget.details.store['services-list'][index]['time'];
+
                     return Container(
                       child: ServiceTile(
                         name: _name,
@@ -84,14 +88,18 @@ class _BookingState extends State<Booking> {
                 splashColor: Colors.white54,
                 backgroundColor: ifAnySelected ? Colors.black : Colors.grey,
                 foregroundColor: Colors.white,
-                child: Icon(Icons.check, size: 30),
+                child: const Icon(Icons.check, size: 30),
                 onPressed: () {
                   if (ifAnySelected) {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        widget.details.service = _name;
-                        Details _details = widget.details;
-                        return SchedulePicker(details: _details);
+                        widget.details.service = [
+                          _name,
+                          _price,
+                          _duration,
+                        ];
+
+                        return SchedulePicker(details: widget.details);
                       },
                     ));
                   }
